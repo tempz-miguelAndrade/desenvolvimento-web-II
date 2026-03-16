@@ -3,29 +3,32 @@ import { ref } from 'vue'
 
 const tarefas = ref(['tarefa 1', 'tarefa 2', 'tarefa 3'])
 const novaTarefa = ref('')
+const posAlterada = ref(-1)
 
 function addTarefa() {
-  if (novaTarefa.value.trim().length >= 5) {
-    tarefas.value.push(novaTarefa.value);
+  if (posAlterada.value == -1) {
+    if (novaTarefa.value.trim().length >= 5) {
+      tarefas.value.push(novaTarefa.value)
+    }
+  } else {
+    tarefas.value.splice(posAlterada.value, 1, novaTarefa.value)
+    posAlterada.value = -1
   }
-  novaTarefa.value = '';
+  novaTarefa.value = ''
 }
-
 
 function delTarefa(item) {
-  const posicao = tarefas.value.indexOf(item);
-  tarefas.value.splice(posicao, 1);
+  const posicao = tarefas.value.indexOf(item)
+  tarefas.value.splice(posicao, 1)
 }
-
 
 function ordenarTarefas() {
-  tarefas.value.sort();
+  tarefas.value.sort()
 }
 
-
-function editarTarefa(item) {
-  const posicao = tarefas.value.indexOf(item);
-  tarefas.value[posicao, 1] = ('');
+function editTarefa(item) {
+  posAlterada.value = tarefas.value.indexOf(item)
+  novaTarefa.value = item
 }
 </script>
 
@@ -39,7 +42,7 @@ function editarTarefa(item) {
       <li v-for="tarefa in tarefas" :key="tarefa">
         {{ tarefa }}
         <span>
-          <a href="#" @click.prevent="editTarefa()">editar</a>
+          <a href="#" @click.prevent="editTarefa(tarefa)">editar</a>
           <a href="#" @click.prevent="delTarefa(tarefa)">Delete</a>
         </span>
       </li>
