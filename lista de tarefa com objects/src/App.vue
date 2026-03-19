@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed, watch } from 'vue'
 const tarefas = ref([
   {
     id: 1,
@@ -25,15 +25,16 @@ const tarefas = ref([
 
 const novaTarefa = ref('')
 const posAlterada = ref(null)
+const filtro = ref('')
 
 function addTarefa(item) {
-  if (novaTarefa.value.trim( ).length >= 5) {
+  if (novaTarefa.value.trim().length >= 5) {
     if (posAlterada.value == null) {
-        tarefas.value.push({
-    id: tarefas.value[tarefas.value.length - 1].id + 1,
-    tarefa: item,
-    status: 'pendente',
-  })
+      tarefas.value.push({
+        id: tarefas.value[tarefas.value.length - 1].id + 1,
+        tarefa: item,
+        status: 'pendente',
+      })
     } else {
       tarefas.value[posAlterada.value].tarefa = novaTarefa.value
       posAlterada.value = null
@@ -55,26 +56,87 @@ function editTarefa(item) {
 function concluirTarefa(item) {
   item.status = item.status === 'concluida' ? 'pendente' : 'concluida'
 }
+
+const tarefasFiltradas = computed(() => {
+  if (filtro.value.trim().length > 0) {
+    return tarefas.value.filter((item) => item.tarefa.includes(filtro.value))
+  } else {
+    return tarefas.value
+  }
+})
+
+const concluidas = ref(tarefasFiltradas.value.filter((item) => item.status == 'concluida').length)
+const pendentes = ref(tarefasFiltradas.value.filter((item) => item.status == 'pendente').length)
+watch(tarefasFiltradas, () => {
+  concluidas.value = tarefasFiltradas.value.filter((item) => item.status == 'concluida').length
+  pendentes.value = tarefasFiltradas.value.filter((item) => item.status == 'pendente').length
+})
+
 </script>
 
 <template>
   <div class="container">
     <h1>Lista de Tarefas</h1>
-    <input type="text" v-model="novaTarefa" />
-    <button @click="addTarefa(novaTarefa)">Adicionar</button>
+    <input type="text" v-model="novaTarefa" placeholder="adicione algo a lista..." class="add"/>
+    <button @click="addTarefa(novaTarefa)" class="add">Adicionar</button>
+    <div class="contador-div">
+      <p>Pendetes: {{ pendentes }} <span> Concluídas: {{ concluidas }}</span></p>
+    </div>
     <ul>
-      <li v-for="item in tarefas" :key="item.id" :class="{concluida: item.status === 'concluida'}">
+      <li
+        v-for="item in tarefasFiltradas"
+        :key="item.id"
+        :class="{ concluida: item.status === 'concluida' }"
+      >
         {{ item.tarefa }}
-        <button @click="delTarefa(item)">Excluir</button>
-        <button @click="editTarefa(item)">Editar</button>
-        <a href="#" @click="concluirTarefa(item)">concluir</a>
+        <button @click="delTarefa(item)" class="exc">Excluir</button>
+        <button @click="editTarefa(item)" class="edit">Editar</button>
+        <button @click="concluirTarefa(item)" class="conc">Concluir</button>
       </li>
     </ul>
+    <div class="filtro-div">
+      <h2>Filtro de lista</h2>
+      <input type="text" v-model="filtro" placeholder="digite o que deseja filtrar..." class="filtro-input"/>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .concluida {
   text-decoration: line-through;
+  color: rgb(52, 234, 52);
+}
+li {
+  color: rgb(241, 62, 62);
+}
+
+.container h1 {
+  font-size: 3rem;
+  color: white;
+  margin-bottom: 2vw;
+}
+
+.container h2 {
+  font-size: 1.5rem;
+  color: white;
+}
+.container button.add, input {
+  margin-bottom: 1vw;
+}
+
+.container ul {
+  margin-bottom: 2vw;
+}
+
+.container .contador-div span{
+  margin-left: 1vw;
+}
+
+.container .contador-div p {
+  color: white-gray;
+}
+
+.container .contador-div {
+  margin-bottom: 1vw;
 }
 </style>
