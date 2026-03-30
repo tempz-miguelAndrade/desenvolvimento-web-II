@@ -1,17 +1,11 @@
 <script setup>
-import ButtonChild from './components/ButtonChild.vue';
+defineProps(['nome', 'tipo', 'basic'])
 </script>
 
 <template>
-  <div class="container">
-    <div>
-      <button class="btn salvar">Salvar</button>
-      <button class="btn cancelar">Cancelar</button>
-    </div>
-    <div>
-      <ButtonChild :basic="'btn'" :tipo="'alerta'">Alerta</ButtonChild>
-    </div>
-  </div>
+  <button :class="[basic, tipo]">
+    <slot></slot>
+  </button>
 </template>
 
 <style scoped>
@@ -33,5 +27,10 @@ import ButtonChild from './components/ButtonChild.vue';
 .btn.cancelar {
   background-color: red;
   color: white;
+}
+
+.btn.alerta {
+  background-color: yellow;
+  color: black;
 }
 </style>
