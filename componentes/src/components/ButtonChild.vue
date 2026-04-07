@@ -1,11 +1,15 @@
 <script setup>
-defineProps(['nome', 'tipo', 'basic'])
+    defineProps(['nome', 'tipo', 'basic']);
+
+    defineEmits(['clique']);
 </script>
 
 <template>
-  <button :class="[basic, tipo]">
-    <slot></slot>
-  </button>
+    <button :class="[basic, tipo]"
+    @click.prevent="$emit('clique', nome)"
+    >
+        <slot></slot>
+    </button>
 </template>
 
 <style scoped>
@@ -18,17 +22,14 @@ defineProps(['nome', 'tipo', 'basic'])
   cursor: pointer;
   margin: 1px;
 }
-
 .btn.salvar {
-  background-color: green;
+  background-color:green;
   color: white;
 }
-
 .btn.cancelar {
   background-color: red;
   color: white;
 }
-
 .btn.alerta {
   background-color: yellow;
   color: black;
