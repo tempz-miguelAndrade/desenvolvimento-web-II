@@ -1,5 +1,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
+import TarefaItem from './components/TarefaItem.vue'
+
 const tarefas = ref([
   {
     id: 1,
@@ -31,7 +33,7 @@ function addTarefa(item) {
   if (novaTarefa.value.trim().length >= 5) {
     if (posAlterada.value == null) {
       tarefas.value.push({
-        id: tarefas.value[tarefas.value.length - 1].id + 1,
+        id: tarefas.value.length ? tarefas.value[tarefas.value.length - 1].id + 1 : 1,
         tarefa: item,
         status: 'pendente',
       })
@@ -67,6 +69,7 @@ const tarefasFiltradas = computed(() => {
 
 const concluidas = ref(tarefasFiltradas.value.filter((item) => item.status == 'concluida').length)
 const pendentes = ref(tarefasFiltradas.value.filter((item) => item.status == 'pendente').length)
+
 watch(tarefas.value, () => {
   concluidas.value = tarefasFiltradas.value.filter((item) => item.status == 'concluida').length
   pendentes.value = tarefasFiltradas.value.filter((item) => item.status == 'pendente').length
@@ -84,20 +87,20 @@ watch(tarefasFiltradas, () => {
     <input type="text" v-model="novaTarefa" placeholder="adicione algo a lista..." class="add"/>
     <button @click="addTarefa(novaTarefa)" class="add">Adicionar</button>
     <div class="contador-div">
-      <p>Pendetes: {{ pendentes }} <span> Concluídas: {{ concluidas }}</span></p>
+      <p>Pendentes: {{ pendentes }} <span> Concluídas: {{ concluidas }}</span></p>
     </div>
+
     <ul>
-      <li
+      <TarefaItem
         v-for="item in tarefasFiltradas"
         :key="item.id"
-        :class="{ concluida: item.status === 'concluida' }"
-      >
-        {{ item.tarefa }}
-        <button @click="delTarefa(item)" class="exc">Excluir</button>
-        <button @click="editTarefa(item)" class="edit">Editar</button>
-        <button @click="concluirTarefa(item)" class="conc">Concluir</button>
-      </li>
+        :item="item"
+        @deletar="delTarefa"
+        @editar="editTarefa"
+        @concluir="concluirTarefa"
+      />
     </ul>
+
     <div class="filtro-div">
       <h2>Filtro de lista</h2>
       <input type="text" v-model="filtro" placeholder="digite o que deseja filtrar..." class="filtro-input"/>
@@ -106,13 +109,6 @@ watch(tarefasFiltradas, () => {
 </template>
 
 <style scoped>
-.concluida {
-  text-decoration: line-through;
-  color: rgb(52, 234, 52);
-}
-li {
-  color: rgb(241, 62, 62);
-}
 
 .container h1 {
   font-size: 3rem;
@@ -137,7 +133,7 @@ li {
 }
 
 .container .contador-div p {
-  color: white-gray;
+  color: lightgray;
 }
 
 .container .contador-div {
