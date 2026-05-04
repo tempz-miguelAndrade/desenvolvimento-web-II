@@ -1,6 +1,6 @@
 <script setup>
 defineProps(['id', 'nome', 'preco', 'categoria'])
-import { formataPreco } from '@/utilis/produtoUtils'
+import { formataPreco } from '@/utilis/produtoUtilis'
 import ButtonChild from './ButtonChild.vue'
 defineEmits(['corrigirpreco'])
 </script>

@@ -1,17 +1,17 @@
 <script setup>
-import { listaProdutos } from '@/data/produtos'
 import { ref } from 'vue'
+import { listaProdutos } from '@/data/produtos'
 
 const produtos = ref(listaProdutos)
-produtos.value = produtos.value.filter( p => p.categoria === 'Alimentos')
+produtos.value = produtos.value.filter((p) => p.categoria === 'Brinquedos')
 </script>
 
 <template>
   <div class="container">
-    <h1>Alimentos</h1>
+    <h1>Brinquedos</h1>
     <div class="produtos">
       <div v-for="produto in produtos" :key="produto.id" class="produto-card">
-        <img src="produto.imagem" class="produto-imagem" />
+        <img src="" class="produto-imagem" />
         <h2>{{ produto.nome }}</h2>
         <p>preço {{ produto.preco.toFixed(2) }}</p>
       </div>
