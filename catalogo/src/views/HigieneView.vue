@@ -4,12 +4,12 @@ import { listaProdutos } from '@/data/produtos'
 import ProdutoCard from '@/components/produtos/ProdutoCard.vue'
 
 const produtos = ref(listaProdutos)
-produtos.value = produtos.value.filter((p) => p.categoria === 'Alimentos')
+produtos.value = produtos.value.filter((p) => p.categoria === 'Higiene')
 </script>
 
 <template>
   <div class="container">
-    <h1>Alimentos</h1>
+    <h1>Higiene</h1>
     <div class="produtos">
       <ProdutoCard
         v-for="produto in produtos"

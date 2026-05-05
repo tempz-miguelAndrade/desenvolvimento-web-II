@@ -3,9 +3,9 @@
 <template>
   <header>
     <router-link to="/">Home</router-link>
-    <router-link to="/Alimentos">Alimentos</router-link>
-    <router-link to="/Brinquedos">Brinquedos</router-link>
-    <router-link to="/Higenie">Higenie</router-link>
+    <router-link to="/alimentos">Alimentos</router-link>
+    <router-link to="/brinquedos">Brinquedos</router-link>
+    <router-link to="/higiene">Higiene</router-link>
   </header>
 </template>
 
