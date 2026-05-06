@@ -1,5 +1,4 @@
 <script setup>
-import { ref } from 'vue'
 defineProps(['id', 'nome', 'preco', 'imagem', 'categoria'])
 import ButtonChild from '../ButtonChild.vue'
 import { formataPreco } from '@/utilis/produtoUtilis'
