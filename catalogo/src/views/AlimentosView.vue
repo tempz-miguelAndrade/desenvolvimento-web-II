@@ -14,7 +14,7 @@ produtos.value = produtos.value.filter((p) => p.categoria === 'Alimentos')
       <ProdutoCard
         v-for="produto in produtos"
         :key="produto.id"
-        :class="produto - card"
+        class="produto-card"
         :id="produto.id"
         :nome="produto.nome"
         :preco="produto.preco"
